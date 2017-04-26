@@ -1,0 +1,47 @@
+contact_form_connector.process_form:
+  path: '/admin/reports/contact_form_connector'
+  defaults:
+    _form: '\Drupal\contact_form_connect\Form\ContactFormConnectSenderQueueForm'
+    _title: 'Contact Form Connect Sender'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.contact_form_connector.collection:
+  path: '/admin/config/system/contact_form_connector'
+  defaults:
+    _entity_list: 'contact_form_connector'
+    _title: 'Contact Form Connector configuration'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.contact_form_connector.add_form:
+  path: '/admin/config/system/contact_form_connector/add'
+  defaults:
+    _entity_form: 'contact_form_connector.add'
+    _title: 'Add contact_form_connector'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.contact_form_connector.edit_form:
+  path: '/admin/config/system/contact_form_connector/{contact_form_connector}'
+  defaults:
+    _entity_form: 'contact_form_connector.edit'
+    _title: 'Edit contact_form_connector'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.contact_form_connector.delete_form:
+  path: '/admin/config/system/contact_form_connector/{contact_form_connector}/delete'
+  defaults:
+    _entity_form: 'contact_form_connector.delete'
+    _title: 'Delete contact_form_connector'
+  requirements:
+    _permission: 'administer site configuration'
+
+contact_form_connect.per_form_settings.instance:
+  path: '/admin/structure/contact/contact_form_connect/{contact_form}'
+  defaults:
+    _title: 'Contact Form Connect'
+    _controller: '\Drupal\contact_form_connect\Controller\ContactFormConnectInstanceController::contactFormConnectInstanceForm'
+  requirements:
+    _permission: 'administer contact forms'

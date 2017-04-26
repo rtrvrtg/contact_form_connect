@@ -1,0 +1,5 @@
+entity.contact_form_connector.add_form:
+  route_name: 'entity.contact_form_connector.add_form'
+  title: 'Add contact form connector'
+  appears_on:
+    - entity.contact_form_connector.collection

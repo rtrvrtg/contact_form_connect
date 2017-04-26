@@ -1,0 +1,22 @@
+contact_form_connect.contact_form_connector.*:
+  type: config_entity
+  label: 'Contact Form Connector'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    service_name:
+      type: string
+      label: 'Service Name'
+    service_endpoint:
+      type: string
+      label: 'Service Endpoint URL'
+    service_username:
+      type: string
+      label: 'Username'
+    service_password:
+      type: string
+      label: 'Password'

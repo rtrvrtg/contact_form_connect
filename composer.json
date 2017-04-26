@@ -1,0 +1,12 @@
+{
+    "require": {
+        "chobie/jira-api-restclient": "^2.0@dev",
+        "google/apiclient": "^2.1"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/t-keller/jira-api-restclient"
+        }
+    ]
+}

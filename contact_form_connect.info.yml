@@ -1,0 +1,9 @@
+name: Contact Form Connect
+description: Connects form submissions to other services.
+package: Contact
+
+type: module
+core: 8.x
+dependencies:
+  - contact
+  - contact_storage

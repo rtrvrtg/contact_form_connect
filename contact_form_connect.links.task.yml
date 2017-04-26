@@ -1,0 +1,4 @@
+contact_form_connect.per_form_settings:
+  title: 'Contact Form Connect'
+  route_name: contact_form_connect.per_form_settings.instance
+  base_route: entity.contact_form.edit_form

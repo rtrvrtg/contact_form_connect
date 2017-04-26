@@ -1,0 +1,75 @@
+<?php
+/**
+ * @file
+ * Contact Form Connect module.
+ */
+
+// namespace Drupal\contact_form_connect;
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function contact_form_connect_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $matched = preg_match('/^contact_message_(.+)_form$/', $form_id, $matches);
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function contact_form_connect_entity_insert(EntityInterface $entity) {
+  $new_message = NULL;
+  $contact_form_id = NULL;
+  $application_type_node = NULL;
+
+  if ($entity->getEntityTypeId() == 'contact_message') {
+    // We have a saved contact message.
+    $new_message = $entity;
+  }
+
+  if (!empty($new_message)) {
+    // Identify the contact form entity ID.
+    $contact_form_item = $new_message->contact_form->get(0)->getValue();
+    $contact_form_id = $contact_form_item['target_id'];
+  }
+
+  if (!empty($contact_form_id)) {
+    // Now that we have a contact form ID,
+    // we can identify what services to connect to,
+    // how to connect to them,
+    // and then send all the data upstream.
+
+    $contact_form = \Drupal::entityManager()
+      ->getStorage('contact_form')
+      ->load($contact_form_id);
+
+    $config = \Drupal::config('contact_form_connect.settings');
+    $connectors_config = $config->get($contact_form->id() . '.contact_form_connectors');
+
+    if (!empty($connectors_config)) {
+      foreach ($connectors_config as $key => $connector_config) {
+        $connector = \Drupal::entityManager()
+          ->getStorage('contact_form_connector')
+          ->load($connector_config['type']);
+        if (!empty($connector)) {
+          // $connect = $connector->getConnector($connector_config);
+          // $connect->sendContactMessage($contact_form, $connector_config, $new_message);
+
+          /** @var QueueFactory $queue_factory */
+          $queue_factory = \Drupal::service('queue');
+          /** @var QueueInterface $queue */
+          $queue = $queue_factory->get('cron_contact_form_connect_send');
+          $item = new \stdClass();
+          $item->contact_form_connector_type = $connector_config['type'];
+          $item->contact_form_id = $contact_form_id;
+          $item->connector_config = $connector_config;
+          $item->message_id = $new_message->id();
+          $queue->createItem($item);
+        }
+      }
+    }
+  }
+}

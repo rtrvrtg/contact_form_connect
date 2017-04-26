@@ -1,0 +1,5 @@
+services:
+  serializer.encoder.flat_array:
+    class: Drupal\contact_form_connect\Encoder\FlatArrayEncoder
+    tags:
+      - { name: encoder, format: flat_array }
